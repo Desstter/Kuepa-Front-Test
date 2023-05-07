@@ -6,6 +6,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import Swal from 'sweetalert2'
+
 
 interface Person {
   Image: string;
@@ -24,7 +26,7 @@ function App() {
   const logoUrl: string =
     "https://www.kuepa.com/logo-kuepa-01-ce02783ec8555816498a749b2c879fb8.png";
   const [level, setLevel] = useState<number>(1);
-  const [subLevel, setSubLevel] = useState<number>(1);
+  const [subLevel, setSubLevel] = useState<number>(4);
 
   const data: Person[] = [
     {
@@ -200,12 +202,34 @@ function App() {
     ) {
       if (subLevel < 5) {
         setSubLevel(subLevel + 1);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Bien hecho',
+          showConfirmButton: false,
+          timer: 2000
+        })
       } else {
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          title: 'Vamos a subir un poco la dificultad',
+          showConfirmButton: false,
+          timer: 2000
+        })
         setSubLevel(0);
         setLevel(level + 1);
       }
+      
     } else {
-      alert("Algo no es correcto");
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Opps...',
+        text: "Parece que algo no esta donde deberia",
+        showConfirmButton: false,
+        timer: 2000
+      })
     }
   }
 
