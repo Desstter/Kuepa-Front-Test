@@ -24,8 +24,9 @@ function App() {
   const [nationality, setNationality] = useState<string>("");
   const logoUrl: string =
     "https://www.kuepa.com/logo-kuepa-01-ce02783ec8555816498a749b2c879fb8.png";
-  const [level, setLevel] = useState<number>(1);
+  const [level, setLevel] = useState<number>(0);
   const [subLevel, setSubLevel] = useState<number>(1);
+  const [usedIndexes, setUsedIndexes] = useState<number[]>([]);
 
   const data: Person[] = [
     {
@@ -139,10 +140,14 @@ function App() {
     resetValues();
 
     const getRandomPerson = () => {
-      const randomIndex = Math.floor(Math.random() * data.length);
+      const availableIndexes = data
+        .map((_, index) => index)
+        .filter((index) => !usedIndexes.includes(index));
+      const randomIndex =
+        availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+      setUsedIndexes([...usedIndexes, randomIndex]);
       return data[randomIndex];
     };
-
     const currentPerson = getRandomPerson();
     setPerson(currentPerson);
 
@@ -200,7 +205,19 @@ function App() {
         });
       } else {
         if (level === 3) {
-          setLevel(0);
+          Swal.fire({
+            title: "Felicidades!",
+            icon: "success",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Volver a comenzar",
+            text: "Ahora las partes que componen tu ID",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setUsedIndexes([]);
+              setLevel(0);
+            }
+          });
         } else {
           setLevel(level + 1);
           Swal.fire({
@@ -345,7 +362,8 @@ function App() {
                       {` ${person[key as keyof typeof person]}`}
                     </Col>
                   </Row>
-                ))}
+                ))
+                .sort(() => Math.random() - 0.5)}
             </Container>
           </Col>
         </Row>
