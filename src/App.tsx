@@ -24,7 +24,7 @@ function App() {
   const [nationality, setNationality] = useState<string>("");
   const logoUrl: string =
     "https://www.kuepa.com/logo-kuepa-01-ce02783ec8555816498a749b2c879fb8.png";
-  const [level, setLevel] = useState<number>(0);
+  const [level, setLevel] = useState<number>(1);
   const [subLevel, setSubLevel] = useState<number>(1);
   const [usedIndexes, setUsedIndexes] = useState<number[]>([]);
 
